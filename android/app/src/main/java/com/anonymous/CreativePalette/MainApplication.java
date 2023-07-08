@@ -1,4 +1,4 @@
-package com.creativepalette;
+package com.anonymous.CreativePalette;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

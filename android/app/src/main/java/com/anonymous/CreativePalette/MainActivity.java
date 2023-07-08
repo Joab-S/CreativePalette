@@ -1,4 +1,4 @@
-package com.creativepalette;
+package com.anonymous.CreativePalette;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

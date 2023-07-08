@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, TextInput, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [fileName, setFileName] = useState('');
   const [imageSize, setImageSize] = useState('');
@@ -17,6 +18,12 @@ const HomeScreen = () => {
 
   const handleCreateArt = () => {
     // Implemente aqui a lógica para criar um novo arquivo de arte com as configurações desejadas
+
+    if (imageWidth === 0 || imageHeight === 0) {
+      // Exibe um alerta ou mensagem informando que as dimensões não podem ser zero
+      return;
+    }
+
     console.log(`Criar novo arquivo:
       Nome: ${fileName}
       Tamanho da Imagem: ${imageSize}
@@ -32,6 +39,9 @@ const HomeScreen = () => {
     setResolution('');
     setImageWidth(0);
     setImageHeight(0);
+
+    // Navegue para a tela de desenho com as dimensões especificadas
+    navigation.navigate('Drawing', { imageWidth, imageHeight });
   };
 
   const handleImageWidthChange = (value) => {
@@ -85,7 +95,6 @@ const HomeScreen = () => {
                 />
               </View>
               <View style={styles.sliderContainer}>
-                <Text>Altura: {imageHeight}</Text>
                 <Slider
                   style={styles.slider}
                   minimumValue={0}
@@ -95,9 +104,9 @@ const HomeScreen = () => {
                   minimumTrackTintColor="#FF5F6D"
                   maximumTrackTintColor="gray"
                 />
+                <Text>Altura: {imageHeight}</Text>
               </View>
               <View style={styles.sliderContainer}>
-                <Text>Largura: {imageWidth}</Text>
                 <Slider
                   style={styles.slider}
                   minimumValue={0}
@@ -107,9 +116,9 @@ const HomeScreen = () => {
                   minimumTrackTintColor="#FF5F6D"
                   maximumTrackTintColor="gray"
                 />
+                <Text>Largura: {imageWidth}</Text>
               </View>
             </View>
-            {/* Restante do conteúdo do modal */}
             <Button title="Criar Arte" onPress={handleCreateArt} />
             <Button title="Cancelar" onPress={() => setModalVisible(false)} />
           </View>
@@ -169,7 +178,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputContainer: {
-    marginBottom: 10,
+    marginBottom: 20,
   },
   inputLabel: {
     fontSize: 16,
@@ -184,6 +193,7 @@ const styles = StyleSheet.create({
   dimensionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 10,
   },
   dimensionInput: {
     flex: 1,
@@ -197,7 +207,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   sliderContainer: {
-    marginBottom: 10,
+    marginBottom: 20,
   },
   slider: {
     width: '100%',

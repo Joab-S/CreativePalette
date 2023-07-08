@@ -73,13 +73,13 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.creativepalette"
+    namespace 'com.anonymous.CreativePalette'
     defaultConfig {
-        applicationId "com.creativepalette"
+        applicationId 'com.anonymous.CreativePalette'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     signingConfigs {
         debug {
@@ -101,6 +101,13 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    project.ext.vectoricons = [
+        iconFontNames: ['MaterialIcons.ttf', 'FontAwesome.ttf', 'Entypo.ttf', 'Feather.ttf'], // Adicione os nomes dos arquivos de fonte dos ícones que você está usando
+    ]
+
+    apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
+
 }
 
 dependencies {
