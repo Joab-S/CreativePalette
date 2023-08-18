@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, TextInput, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState('NovaArte');
   const [imageSize, setImageSize] = useState('');
   const [resolution, setResolution] = useState('');
-  const [imageWidth, setImageWidth] = useState(0);
-  const [imageHeight, setImageHeight] = useState(0);
+  const [imageWidth, setImageWidth] = useState(600);
+  const [imageHeight, setImageHeight] = useState(600);
 
   const handleNewArt = () => {
     setModalVisible(true);
@@ -58,25 +59,29 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>CreativePalette</Text>
       <Text style={styles.subtitle}>Aplicativo de Desenho</Text>
-      <TouchableOpacity style={styles.button} onPress={handleNewArt}>
-        <Text style={styles.buttonText}>Iniciar uma nova arte</Text>
+
+      <TouchableOpacity style={styles.newArtButton} onPress={handleNewArt}>
+        <Icon name="paint-brush" size={30} color="white" />
+        <Text style={styles.newArtButtonText}>Iniciar uma nova arte</Text>
       </TouchableOpacity>
 
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Nova Arte</Text>
+
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Nome do Arquivo</Text>
               <TextInput
                 style={styles.input}
                 placeholder="Digite o nome do arquivo"
                 value={fileName}
-                onChangeText={text => setFileName(text)}
+                onChangeText={(text) => setFileName(text)}
               />
             </View>
+
             <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Tamanho da Imagem</Text>
+              <Text style={styles.inputLabel}>Dimensões da Imagem</Text>
               <View style={styles.dimensionContainer}>
                 <TextInput
                   style={styles.dimensionInput}
@@ -84,6 +89,7 @@ const HomeScreen = () => {
                   value={imageHeight.toString()}
                   onChangeText={handleImageHeightChange}
                   keyboardType="numeric"
+                  placeholderTextColor="#999"
                 />
                 <Text style={styles.dimensionSeparator}>x</Text>
                 <TextInput
@@ -92,35 +98,42 @@ const HomeScreen = () => {
                   value={imageWidth.toString()}
                   onChangeText={handleImageWidthChange}
                   keyboardType="numeric"
+                  placeholderTextColor="#999"
                 />
-              </View>
-              <View style={styles.sliderContainer}>
-                <Slider
-                  style={styles.slider}
-                  minimumValue={0}
-                  maximumValue={5000}
-                  value={imageHeight}
-                  onValueChange={handleImageHeightChange}
-                  minimumTrackTintColor="#FF5F6D"
-                  maximumTrackTintColor="gray"
-                />
-                <Text>Altura: {imageHeight}</Text>
-              </View>
-              <View style={styles.sliderContainer}>
-                <Slider
-                  style={styles.slider}
-                  minimumValue={0}
-                  maximumValue={5000}
-                  value={imageWidth}
-                  onValueChange={handleImageWidthChange}
-                  minimumTrackTintColor="#FF5F6D"
-                  maximumTrackTintColor="gray"
-                />
-                <Text>Largura: {imageWidth}</Text>
               </View>
             </View>
-            <Button title="Criar Arte" onPress={handleCreateArt} />
-            <Button title="Cancelar" onPress={() => setModalVisible(false)} />
+
+            <View style={styles.sliderContainer}>
+              <Text style={styles.sliderLabel}>Altura: {imageHeight}</Text>
+              <Slider
+                style={styles.slider}
+                minimumValue={0}
+                maximumValue={5000}
+                value={imageHeight}
+                onValueChange={handleImageHeightChange}
+                minimumTrackTintColor="#FF5F6D"
+                maximumTrackTintColor="gray"
+                thumbTintColor="#FF5F6D"
+              />
+            </View>
+
+            <View style={styles.sliderContainer}>
+              <Text style={styles.sliderLabel}>Largura: {imageWidth}</Text>
+              <Slider
+                style={styles.slider}
+                minimumValue={0}
+                maximumValue={5000}
+                value={imageWidth}
+                onValueChange={handleImageWidthChange}
+                minimumTrackTintColor="#FF5F6D"
+                maximumTrackTintColor="gray"
+                thumbTintColor="#FF5F6D"
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button title="Criar Arte" onPress={handleCreateArt} />
+              <Button title="Cancelar" onPress={() => setModalVisible(false)} />
+            </View>
           </View>
         </View>
       </Modal>
@@ -133,30 +146,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    backgroundColor: '#222',
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
+    color: 'white',
     marginBottom: 10,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
+    color: '#999',
     marginBottom: 20,
-    color: 'gray',
     textAlign: 'center',
   },
-  button: {
+  newArtButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#FF5F6D',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
-  buttonText: {
+  newArtButtonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
+    marginLeft: 10,
   },
   modalContainer: {
     flex: 1,
@@ -175,6 +192,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#222',
     textAlign: 'center',
   },
   inputContainer: {
@@ -183,12 +201,14 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 16,
     marginBottom: 5,
+    color: '#222',
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#999',
     borderWidth: 1,
     paddingHorizontal: 10,
+    color: '#222',
   },
   dimensionContainer: {
     flexDirection: 'row',
@@ -198,19 +218,30 @@ const styles = StyleSheet.create({
   dimensionInput: {
     flex: 1,
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#999',
     borderWidth: 1,
     paddingHorizontal: 10,
+    color: '#222',
   },
   dimensionSeparator: {
     fontSize: 20,
     marginHorizontal: 5,
+    color: '#999',
   },
   sliderContainer: {
     marginBottom: 20,
   },
+  sliderLabel: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: '#222',
+  },
   slider: {
     width: '100%',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
